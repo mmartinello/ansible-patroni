@@ -1,0 +1,40 @@
+# {{ ansible_managed }}
+
+# Patroni Docker Compose configuration file
+
+version: "2"
+
+services:
+  patroni:
+    image: ${IMAGE_TAG:-patroni}
+    env_file: .env
+    hostname: ${PATRONI_HOSTNAME}
+    restart: ${DOCKER_RESTART_POLICY:-always}
+    environment:
+      PATRONI_ETCD3_HOSTS: ${PATRONI_ETCD3_HOSTS}
+      PATRONI_SCOPE: ${PATRONI_CLUSTER_NAME:-patroni}
+      PATRONI_NAME: ${PATRONI_HOSTNAME}
+      PATRONI_CONF_FILE_PATH: /etc/patroni.yml
+      PATRONI_LOG_LEVEL: ${PATRONI_LOG_LEVEL:-INFO}
+      PATRONI_LOG_DIR: /var/log/patroni
+      PATRONI_POSTGRESQL_DATA_DIR: /var/lib/postgresql/data
+      PATRONI_POSTGRESQL_BIN_DIR: ${PATRONI_POSTGRESQL_BIN_DIR:-}
+      PATRONI_POSTGRESQL_LISTEN: 0.0.0.0:5432
+      PATRONI_RESTAPI_CONNECT_ADDRESS: ${PATRONI_RESTAPI_CONNECT_ADDRESS}
+      PATRONI_RESTAPI_LISTEN: 0.0.0.0:8008
+      PATRONI_RESTAPI_USERNAME: ${PATRONI_RESTAPI_USERNAME:-admin}
+      PATRONI_RESTAPI_PASSWORD: ${PATRONI_RESTAPI_PASSWORD:-admin}
+      PATRONI_SUPERUSER_USERNAME: ${PATRONI_SUPERUSER_USERNAME:-postgres}
+      PATRONI_SUPERUSER_PASSWORD: ${PATRONI_SUPERUSER_PASSWORD:-postgres}
+      PATRONI_REPLICATION_USERNAME: ${PATRONI_REPLICATION_USERNAME:-replicator}
+      PATRONI_REPLICATION_PASSWORD: ${PATRONI_REPLICATION_PASSWORD:-replicate}
+      PATRONI_admin_PASSWORD: admin
+      PATRONI_admin_OPTIONS: createdb,createrole
+      PATRONI_POSTGRESQL_CONNECT_ADDRESS: ${PATRONI_POSTGRESQL_CONNECT_ADDRESS}
+    ports:
+      - ${POSTGRESQL_HOST_PORT:-5432}:5432
+      - ${PATRONI_RESTAPI_HOST_PORT:-8008}:8008
+    volumes:
+      - ${PATRONI_HOST_LOG_DIR:-/var/log/patroni}:${PATRONI_LOG_DIR:-/var/log/patroni}
+      - ${PATRONI_POSTGRESQL_HOST_DATA_DIR:-/var/lib/postgresql}:/var/lib/postgresql
+      - ./patroni.yml:/etc/patroni.yml
