@@ -1,0 +1,124 @@
+---
+###############################################################################
+# Main Docker settings
+
+# Install Docker (set to false if you want to install Docker manually or with
+# another role)
+patroni_install_docker: true
+
+# Docker image tag to be installed
+patroni_docker_image_tag: 14-latest
+
+# Patroni Docker Compose project directory
+patroni_docker_compose_project_dir: /opt/patroni
+
+# Log directory (dir path on Docker host, mounted in container)
+patroni_log_dir: /var/log/patroni
+
+# Start Patroni after install
+patroni_start: true
+
+# Docker container restart policy
+patroni_docker_restart_policy: always
+
+# Pull the latest Docker image
+patroni_docker_pull: true
+
+
+###############################################################################
+# Patroni settings
+
+# Hostname of the Patroni container (has to be unique in the cluster!)
+patroni_hostname: "{{ ansible_hostname }}"
+
+# Cluster name
+patroni_scope: patroni
+
+# Sets the general logging level. Default value is INFO
+# See docs for Python logging:
+# https://docs.python.org/3.6/library/logging.html#levels
+patroni_log_level: DEBUG
+
+patroni_nodes:
+  - patroni1
+  - patroni2
+
+# etcdv3 hosts
+patroni_etcd3_hosts:
+  - patroni1:2379
+  - patroni2:2379
+
+
+###############################################################################
+# PostgreSQL settings
+
+# PostgreSQL port
+patroni_postgresql_port: 5432
+
+# PostgreSQL data directory
+patroni_postgresql_data_dir: /var/lib/patroni
+
+# Path to PostgreSQL binaries. (pg_ctl, initdb, pg_controldata, pg_basebackup,
+# postgres, pg_isready, pg_rewind) The default value is an empty string
+# meaning that PATH environment variable will be used to find the executables.
+patroni_postgresql_bin_dir: /usr/lib/postgresql/12/bin
+
+# Name for the superuser, set during initialization (initdb) and later used by
+# Patroni to connect to the postgres, also this user is used by pg_rewind
+patroni_superuser_username: patroni
+
+# password for the superuser, set during initialization (initdb)
+patroni_superuser_password: patroni
+
+# Replication username; the user will be created during initialization.
+# Replicas will use this user to access the replication source via
+# streaming replication
+patroni_replication_username: replication
+
+# Replication password; the user will be created during initialization
+patroni_replication_password: replication
+
+# IP address + port through which Postgres is accessible from other nodes and applications.
+patroni_postgresql_connect_address: "{{ ansible_fqdn }}:{{ patroni_postgresql_port }}"
+
+# PostgreSQL configuration parameters
+patroni_postgres_parameters: {}
+
+# Authorize connections from all hosts with md5 authentication
+patroni_postgresql_hba_authorize_all_hosts: true
+
+# Additional pg_hba entries
+patroni_postgresql_additional_pg_hba: []
+
+
+###############################################################################
+# Patroni tags
+# (https://patroni.readthedocs.io/en/latest/yaml_configuration.html#tags)
+
+# Enable "nofailover" mode
+patroni_nofailover: false
+
+# Enable "noloadbalance" mode
+patroni_noloadbalance: false
+
+# Enable "clonefrom" mode
+patroni_clonefrom: false
+
+# Enable "nosync" mode
+patroni_nosync: false
+
+
+###############################################################################
+# Patroni REST API settings
+
+# Patroni REST API port
+patroni_restapi_port: 8008
+
+# IP address and port to access the REST API
+patroni_restapi_connect_address: "{{ ansible_fqdn }}:{{ patroni_restapi_port }}"
+
+# Basic-auth username to protect unsafe REST API endpoints
+patroni_restapi_username: patroni
+
+# Basic-auth password to protect unsafe REST API endpoints
+patroni_restapi_password: patroni

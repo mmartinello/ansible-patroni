@@ -1,0 +1,7 @@
+---
+- name: Install Docker
+  ansible.builtin.include_tasks: docker.yml
+  when: patroni_install_docker
+
+- name: Install and configure Patroni on Docker
+  ansible.builtin.include_tasks: install.yml

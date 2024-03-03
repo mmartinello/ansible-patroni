@@ -1,0 +1,73 @@
+---
+- name: Install Docker
+  ansible.builtin.import_role:
+    name: mmartinello.docker
+
+- name: Install Docker PIP package
+  ansible.builtin.pip:
+    name: docker
+    state: present
+
+- name: Create the Docker Compose project destination directory
+  ansible.builtin.file:
+    path: "{{ patroni_docker_compose_project_dir }}"
+    state: directory
+    recurse: true
+
+- name: Create the Patroni PostgreSQL log directory
+  ansible.builtin.file:
+    path: "{{ patroni_log_dir }}"
+    state: directory
+    recurse: true
+    owner: 999
+    group: 999
+    mode: "0750"
+
+- name: Create the Patroni PostgreSQL data directory
+  ansible.builtin.file:
+    path: "{{ patroni_postgresql_data_dir }}"
+    state: directory
+    recurse: true
+    owner: 999
+    group: 999
+    mode: "0700"
+
+- name: Create the Docker Compose configuration file
+  ansible.builtin.template:
+    src: docker-compose.yml.j2
+    dest: "{{ patroni_docker_compose_project_dir }}/docker-compose.yml"
+    owner: root
+    group: root
+    mode: "0640"
+
+- name: Create the .env confiuration file
+  ansible.builtin.template:
+    src: .env.j2
+    dest: "{{ patroni_docker_compose_project_dir }}/.env"
+    owner: root
+    group: root
+    mode: "0660"
+
+- name: Create the patroni.yml confiuration file
+  ansible.builtin.template:
+    src: patroni.yml.j2
+    dest: "{{ patroni_docker_compose_project_dir }}/patroni.yml"
+    owner: 999
+    group: 999
+    mode: "0660"
+
+- name: Pull Docker images
+  ansible.builtin.command:
+    cmd: docker compose pull
+    chdir: "{{ patroni_docker_compose_project_dir }}"
+  register: _command_output
+  changed_when: _command_output.rc == 0
+  when: patroni_docker_pull
+
+- name: Start the Docker Compose project
+  ansible.builtin.command:
+    cmd: docker compose up -d
+    chdir: "{{ patroni_docker_compose_project_dir }}"
+  register: _command_output
+  changed_when: _command_output.rc == 0
+  when: patroni_start
