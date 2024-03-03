@@ -40,7 +40,7 @@
     group: root
     mode: "0640"
 
-- name: Create the .env confiuration file
+- name: Create the .env confiugration file
   ansible.builtin.template:
     src: .env.j2
     dest: "{{ patroni_docker_compose_project_dir }}/.env"
@@ -48,7 +48,7 @@
     group: root
     mode: "0660"
 
-- name: Create the patroni.yml confiuration file
+- name: Create the patroni.yml configuration file
   ansible.builtin.template:
     src: patroni.yml.j2
     dest: "{{ patroni_docker_compose_project_dir }}/patroni.yml"
