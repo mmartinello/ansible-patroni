@@ -3,11 +3,6 @@
   ansible.builtin.import_role:
     name: mmartinello.docker
 
-- name: Install Docker PIP package
-  ansible.builtin.pip:
-    name: docker
-    state: present
-
 - name: Create the Docker Compose project destination directory
   ansible.builtin.file:
     path: "{{ patroni_docker_compose_project_dir }}"
