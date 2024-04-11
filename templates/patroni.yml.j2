@@ -55,6 +55,9 @@ bootstrap:
   # WARNING! If you want to change any of the parameters that were set up
   # via `bootstrap.dcs` section, please use `patronictl edit-config`!
   dcs:
+    ignore_slots:
+    - name: barman
+      type: physical
     ttl: 30
     loop_wait: 10
     retry_timeout: 10
