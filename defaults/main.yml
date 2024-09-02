@@ -65,7 +65,7 @@ patroni_postgresql_bin_dir: /usr/lib/postgresql/12/bin
 
 # Name for the superuser, set during initialization (initdb) and later used by
 # Patroni to connect to the postgres, also this user is used by pg_rewind
-patroni_superuser_username: postgres
+patroni_superuser_username: patroni
 
 # password for the superuser, set during initialization (initdb)
 patroni_superuser_password: postgres
