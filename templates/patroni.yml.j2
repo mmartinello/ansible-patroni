@@ -71,7 +71,7 @@ bootstrap:
     postgresql:
       use_pg_rewind: true
       pg_hba:
-      - local all {% patroni_superuser_username %} peer
+      - local all {{ patroni_superuser_username }} peer
       - local replication all peer
       - host replication {{ patroni_replication_username }} 127.0.0.1/32 md5
 {% for node in patroni_nodes %}
@@ -118,7 +118,7 @@ postgresql:
       password: rewind_password
 
   pg_hba:
-  - local all {% patroni_superuser_username %} peer
+  - local all {{ patroni_superuser_username }} peer
   - local replication all peer
   - host replication {{ patroni_replication_username }} 127.0.0.1/32 md5
 {% for node in patroni_nodes %}
