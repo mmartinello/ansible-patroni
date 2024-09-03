@@ -34,5 +34,5 @@ services:
       - ${PATRONI_RESTAPI_HOST_PORT:-8008}:8008
     volumes:
       - ${PATRONI_HOST_LOG_DIR:-/var/log/patroni}:${PATRONI_LOG_DIR:-/var/log/patroni}
-      - ${PATRONI_POSTGRESQL_HOST_DATA_DIR:-/var/lib/postgresql}:/var/lib/postgresql
+      - ${PATRONI_HOST_POSTGRESQL_DATA_DIR:-/var/lib/postgresql}:/var/lib/postgresql
       - ./patroni.yml:/etc/patroni.yml
