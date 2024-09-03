@@ -13,7 +13,7 @@ patroni_docker_image_tag: 14-latest
 patroni_docker_compose_project_dir: /opt/patroni
 
 # PostgreSQL data directory (dir path on Docker host, mounted in container)
-patroni_postgresql_host_data_dir: /var/lib/postgresql
+patroni_host_postgresql_data_dir: /var/lib/postgresql
 
 # Log directory (dir path on Docker host, mounted in container)
 patroni_host_log_dir: /var/log/patroni
