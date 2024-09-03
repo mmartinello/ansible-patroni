@@ -11,7 +11,7 @@
 
 - name: Create the Patroni PostgreSQL log directory
   ansible.builtin.file:
-    path: "{{ patroni_log_dir }}"
+    path: "{{ patroni_host_log_dir }}"
     state: directory
     recurse: true
     owner: 999
@@ -20,7 +20,7 @@
 
 - name: Create the Patroni PostgreSQL data directory
   ansible.builtin.file:
-    path: "{{ patroni_postgresql_data_dir }}"
+    path: "{{ patroni_postgresql_host_data_dir }}"
     state: directory
     recurse: true
     owner: 999
