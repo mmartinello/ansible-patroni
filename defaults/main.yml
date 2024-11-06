@@ -9,11 +9,14 @@ patroni_install_docker: true
 # Docker image tag to be installed
 patroni_docker_image_tag: 14-latest
 
-# Patroni Docker Compose project directory
+# Patroni Docker Compose project directory (dir path on Docker host)
 patroni_docker_compose_project_dir: /opt/patroni
 
+# PostgreSQL data directory (dir path on Docker host, mounted in container)
+patroni_host_postgresql_data_dir: /var/lib/postgresql
+
 # Log directory (dir path on Docker host, mounted in container)
-patroni_log_dir: /var/log/patroni
+patroni_host_log_dir: /var/log/patroni
 
 # Start Patroni after install
 patroni_start: true
@@ -55,7 +58,8 @@ patroni_etcd3_hosts:
 # PostgreSQL port
 patroni_postgresql_port: 5432
 
-# PostgreSQL data directory
+# The location of the Postgres data directory, either existing or to be
+# initialized by Patroni.
 patroni_postgresql_data_dir: /var/lib/patroni
 
 # Path to PostgreSQL binaries. (pg_ctl, initdb, pg_controldata, pg_basebackup,

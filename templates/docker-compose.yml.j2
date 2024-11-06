@@ -15,7 +15,7 @@ services:
       PATRONI_CONF_FILE_PATH: /etc/patroni.yml
       PATRONI_LOG_LEVEL: ${PATRONI_LOG_LEVEL:-INFO}
       PATRONI_LOG_DIR: /var/log/patroni
-      PATRONI_POSTGRESQL_DATA_DIR: /var/lib/postgresql/data
+      PATRONI_POSTGRESQL_DATA_DIR: ${PATRONI_POSTGRESQL_DATA_DIR:-/var/lib/postgresql/data}
       PATRONI_POSTGRESQL_BIN_DIR: ${PATRONI_POSTGRESQL_BIN_DIR:-}
       PATRONI_POSTGRESQL_LISTEN: 0.0.0.0:5432
       PATRONI_RESTAPI_CONNECT_ADDRESS: ${PATRONI_RESTAPI_CONNECT_ADDRESS}
@@ -34,5 +34,5 @@ services:
       - ${PATRONI_RESTAPI_HOST_PORT:-8008}:8008
     volumes:
       - ${PATRONI_HOST_LOG_DIR:-/var/log/patroni}:${PATRONI_LOG_DIR:-/var/log/patroni}
-      - ${PATRONI_POSTGRESQL_HOST_DATA_DIR:-/var/lib/postgresql}:/var/lib/postgresql
+      - ${PATRONI_HOST_POSTGRESQL_DATA_DIR:-/var/lib/postgresql}:/var/lib/postgresql
       - ./patroni.yml:/etc/patroni.yml
